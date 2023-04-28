@@ -1,0 +1,13 @@
+$default-margin: 0;
+$default-padding: 0;
+$all-screen-height: 100vh;
+
+* {
+    margin: $default-margin;
+    padding: $default-padding;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    height: $all-screen-height;
+}
