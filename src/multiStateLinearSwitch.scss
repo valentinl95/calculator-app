@@ -1,0 +1,15 @@
+.switch-board {
+    position: relative;
+    width: 48px;
+    height: 16px;
+    background-color: white;
+
+    .switch {
+        position: absolute;
+        left: calc(16px * var(--current));
+        width: 16px;
+        height: 16px;
+        background-color: red;
+        transition: left 0.5s ease-out;
+    }
+}

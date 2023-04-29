@@ -1,13 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap');
+@import "./_themes.scss";
+
 $default-margin: 0;
 $default-padding: 0;
 $all-screen-height: 100vh;
 
 * {
-    margin: $default-margin;
-    padding: $default-padding;
-    box-sizing: border-box;
+  margin: $default-margin;
+  padding: $default-padding;
+  box-sizing: border-box;
 }
 
 html, body, #root {
-    height: $all-screen-height;
+  height: $all-screen-height;
+}
+
+$theme: $theme-1;
+
+body {
+  $min-key-width: 65px;
+  $max-key-width: 100px;
+  $key-height: 65px;
+  $keyboard-gap: 24px;
+  $keyboard-padding: 24px;
+
+  .app {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 32px;
+
+    width: 100%;
+    height: 100vh;
+
+    overflow: auto;
+    padding: 24px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+    background-color: map-get($theme, main-bg);
+
+    .container {
+      display: flex;
+      flex-direction: column;
+
+      .display {
+        background-color: map-get($theme, display-bg);
+        color: map-get($theme, display-text);
+        font-size: 2em;
+
+        text-align: right;
+        padding: 40px 32px;
+      }
+
+      .keyboard {
+        background-color: map-get($theme, keypad-bg);
+        padding: 24px;
+
+        display: flex;
+        flex-direction: column;
+        gap: $keyboard-gap;
+
+        .keyboard-row {
+          display: inline-flex;
+          flex-direction: row;
+          gap: $keyboard-gap;
+
+          .key {
+            flex: 1 1;
+
+            $key-shadow-size: 4px;
+
+            border-radius: 8px;
+            padding: 8px;
+
+            width: clamp($min-key-width, 15vw, $max-key-width);
+            height: $key-height;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            @mixin bottom-shadow($size, $color) {
+              box-shadow: inset 0 #{-$size} 0 $color;
+            }
+
+            background-color: map-get($theme, key-bg);
+            color: map-get($theme, reg-key-text);
+            @include bottom-shadow($key-shadow-size, map-get($theme, key-shadow));
+
+            &.eq {
+              background-color: map-get($theme, eq-key-bg);
+              color: map-get($theme, spec-eq-key-text);
+              @include bottom-shadow($key-shadow-size, map-get($theme, eq-key-shadow));
+            }
+
+            &.reset, &.del {
+              background-color: map-get($theme, spec-key-bg);
+              color: map-get($theme, spec-eq-key-text);
+              @include bottom-shadow($key-shadow-size, map-get($theme, spec-key-shadow));
+            }
+
+            label {
+              text-align: center;
+              text-transform: uppercase;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.non-selectable {
+  user-select: none;
 }

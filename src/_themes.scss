@@ -1,0 +1,37 @@
+  $theme-1: (
+  main-bg: hsl(222, 26%, 31%),
+  toggle-bg: hsl(223, 31%, 20%),
+  keypad-bg: hsl(223, 31%, 20%),
+  display-bg: hsl(224, 36%, 15%),
+
+  key-bg: hsl(30, 25%, 89%),
+  key-shadow: hsl(28, 16%, 65%),
+
+  spec-key-bg: hsl(225, 21%, 49%),
+  spec-key-shadow: hsl(224, 28%, 35%),
+
+  eq-key-bg: hsl(6, 63%, 50%),
+  eq-key-shadow: hsl(6, 70%, 34%),
+
+  reg-key-text: hsl(221, 14%, 31%),
+  spec-eq-key-text: hsl(0, 0%, 100%),
+  display-text: hsl(0, 0%, 100%),
+);
+
+$theme-2: (
+  main-bg: hsl(0, 0%, 90%),
+  toggle-bg: hsl(0, 5%, 81%),
+  keypad-bg: hsl(0, 5%, 81%),
+  display-bg: hsl(0, 0%, 93%),
+
+  display-text: hsl(0, 0%, 100%),
+);
+
+$theme-3: (
+  main-bg: hsl(268, 75%, 9%),
+  toggle-bg: hsl(268, 71%, 12%),
+  keypad-bg: hsl(268, 71%, 12%),
+  display-bg: hsl(268, 71%, 12%),
+
+  display-text: hsl(0, 0%, 100%),
+);
