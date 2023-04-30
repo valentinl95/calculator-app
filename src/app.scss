@@ -15,8 +15,6 @@ html, body, #root {
   height: $all-screen-height;
 }
 
-$theme: $theme-1;
-
 body {
   $min-key-width: 65px;
   $max-key-width: 100px;
@@ -25,6 +23,17 @@ body {
   $keyboard-padding: 24px;
 
   .app {
+
+    @include set-theme($theme-1);
+
+    &.theme-2 {
+      @include set-theme($theme-2);
+    }
+
+    &.theme-3 {
+      @include set-theme($theme-3);
+    }
+
     font-family: 'League Spartan', sans-serif;
     font-size: 32px;
 
@@ -39,7 +48,7 @@ body {
     justify-content: center;
     align-items: flex-start;
 
-    background-color: map-get($theme, main-bg);
+    background-color: var(--main-bg);
 
     .container {
       $container-min-width: 380px;
@@ -48,6 +57,9 @@ body {
       flex-direction: column;
       gap: 24px;
       width: clamp($container-min-width, 90vw, 540px);
+
+      margin-left: auto;
+      margin-right: auto;
 
       header {
         $single-theme-switch-size: 16px;
@@ -60,7 +72,7 @@ body {
         align-items: center;
 
         label {
-          color: map-get($theme, display-text);
+          color: var(--display-text);
         }
 
         .switching-themes {
@@ -103,7 +115,7 @@ body {
               padding: $theme-switcher-pad;
 
               border-radius: calc(2 * $theme-switcher-pad);
-              background-color: map-get($theme, toggle-bg);
+              background-color: var(--toggle-bg);
 
               .circle, .tumbler {
                 position: absolute;
@@ -119,7 +131,7 @@ body {
               }
 
               .tumbler {
-                background-color: map-get($theme, toggle);
+                background-color: var(--toggle);
               }
             }
           }
@@ -128,8 +140,8 @@ body {
 
       .display {
         display: block;
-        background-color: map-get($theme, display-bg);
-        color: map-get($theme, display-text);
+        background-color: var(--display-bg);
+        color: var(--display-text);
         font-size: 2.5em;
         border-radius: 8px;
 
@@ -139,7 +151,7 @@ body {
       }
 
       .keyboard {
-        background-color: map-get($theme, keypad-bg);
+        background-color: var(--keypad-bg);
         padding: 24px;
         border-radius: 8px;
 
@@ -150,6 +162,7 @@ body {
         .keyboard-row {
           display: inline-flex;
           flex-direction: row;
+          align-items: flex-end;
           gap: $keyboard-gap;
 
           .key {
@@ -163,6 +176,8 @@ body {
             width: clamp($min-key-width, 15vw, $max-key-width);
             height: $key-height;
 
+            transition: box-shadow 150ms ease, height 150ms ease;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -171,25 +186,47 @@ body {
               box-shadow: inset 0 #{-$size} 0 $color;
             }
 
-            background-color: map-get($theme, key-bg);
-            color: map-get($theme, reg-key-text);
-            @include bottom-shadow($key-shadow-size, map-get($theme, key-shadow));
+            @mixin key-background($color, $hover-color) {
+              background-color: $color;
+
+              &:hover {
+                background-color: $hover-color;
+              }
+            }
+
+            @include key-background(var(--key-bg), var(--key-hover-bg));
+            
+            &:not(:active) {
+              @include bottom-shadow($key-shadow-size, var(--key-shadow));
+            }
+
+            &:active {
+              height: $key-height - $key-shadow-size;
+            }
 
             &.eq {
-              background-color: map-get($theme, eq-key-bg);
-              color: map-get($theme, spec-eq-key-text);
-              @include bottom-shadow($key-shadow-size, map-get($theme, eq-key-shadow));
+              --key-bg: var(--eq-key-bg);
+              --key-hover-bg: var(--eq-key-hover-bg);
+              --key-shadow: var(--eq-key-shadow);
+              --key-color: var(--eq-key-color);
             }
 
             &.reset, &.del {
-              background-color: map-get($theme, spec-key-bg);
-              color: map-get($theme, spec-eq-key-text);
-              @include bottom-shadow($key-shadow-size, map-get($theme, spec-key-shadow));
+              --key-bg: var(--spec-key-bg);
+              --key-hover-bg: var(--spec-key-hover-bg);
+              --key-shadow: var(--spec-key-shadow);
+              --key-color: var(--spec-key-color);
+            }
+
+            &:hover {
+              cursor: pointer;
             }
 
             label {
               text-align: center;
               text-transform: uppercase;
+              pointer-events: none;
+              color: var(--key-color);
             }
 
             &.mul label {
@@ -204,4 +241,10 @@ body {
 
 .non-selectable {
   user-select: none;
+}
+
+.theme-changing {
+  &, & * {
+    transition: all 300ms ease !important;
+  }
 }
