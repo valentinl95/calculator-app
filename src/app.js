@@ -20,7 +20,7 @@ function useTransition(state, time) {
     return () => {
       clearTimeout(timeout);
     }
-  }, [state]);
+  }, [state, time]);
 
   return transition || last !== state;
 }
