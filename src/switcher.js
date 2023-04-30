@@ -8,7 +8,7 @@ function Switcher({ states, state, setState }) {
   return (
     <div className="switcher-container">
       <div className="switcher-labels">
-        {states.map(stateName => (<label>{stateName}</label>))}
+        {states.map((stateName, index) => (<label key={index}>{stateName}</label>))}
       </div>
       <div className="switcher" style={{ "--total": states.length }}>
         {states.map((_, index) => (
