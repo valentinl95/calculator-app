@@ -1,24 +1,31 @@
 import { useState } from 'react';
 import './app.scss';
-import CalculatorFsm from './calculatorFsm.js';
-import Display from './display.js';
-import Keyboard from './keyboard.js';
-// import MultiStateLinearSwitch from './multiStateLinearSwitch.js';
+import Header from './header';
+import CalculatorFsm from './calculatorFsm';
+import Display from './display';
+import Keyboard from './keyboard';
 
 function App() {
+  const states = ["1", "2", "3"];
+
   const [fsm, setFsm] = useState(new CalculatorFsm());
+  const [theme, setTheme] = useState(states[0]);
 
   const onClick = (event) => {
-    let newFsm = new CalculatorFsm(fsm);
-    newFsm.transition(event.target.dataset.value);
-    setFsm(fsm => ({ ...fsm, newFsm }));
+    let newFsm = fsm.clone();
+    newFsm.transition(event.currentTarget.dataset.value);
+    setFsm(newFsm);
   };
 
-  console.log(fsm);
   return (
-    <div className="app">
+    <div className={`app theme-${theme}`}>
       <div className="container">
-        <Display value={fsm.displayValue()} />
+        <Header
+          states={states}
+          theme={theme}
+          setTheme={setTheme}
+        />
+        <Display value={fsm.displayValue() || 0} />
         <Keyboard clickHandler={onClick} />
       </div>
     </div>

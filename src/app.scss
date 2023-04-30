@@ -42,21 +42,106 @@ body {
     background-color: map-get($theme, main-bg);
 
     .container {
+      $container-min-width: 380px;
+
       display: flex;
       flex-direction: column;
+      gap: 24px;
+      width: clamp($container-min-width, 90vw, 540px);
+
+      header {
+        $single-theme-switch-size: 16px;
+        $theme-switcher-pad: 8px;
+        $theme-switcher-gap: 8px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        label {
+          color: map-get($theme, display-text);
+        }
+
+        .switching-themes {
+          position: relative;
+
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 32px;
+
+          .desc-label {
+            align-self: end;
+
+            label {
+              font-size: 0.4em;
+              text-transform: uppercase;
+              letter-spacing: 0.15em;
+            }
+          }
+
+          .switcher-container  {
+            display: flex;
+            flex-direction: column;
+
+            .switcher-labels {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-around;
+
+              label {
+                font-size: 0.5em;
+              }
+            }
+
+            .switcher {
+              width: calc(var(--total) * $single-theme-switch-size + 2 * $theme-switcher-pad + (var(--total) - 1) * $theme-switcher-gap);
+              height: calc($single-theme-switch-size + 2 * $theme-switcher-pad);
+
+              position: relative;
+              padding: $theme-switcher-pad;
+
+              border-radius: calc(2 * $theme-switcher-pad);
+              background-color: map-get($theme, toggle-bg);
+
+              .circle, .tumbler {
+                position: absolute;
+                width: $single-theme-switch-size;
+                height: $single-theme-switch-size;
+                margin: $theme-switcher-pad;
+                left: calc(var(--current) * ($single-theme-switch-size + $theme-switcher-gap));
+                top: 0;
+                border-radius: 50%;
+                border: none;
+                display: inline-block;
+                cursor: pointer;
+              }
+
+              .tumbler {
+                background-color: map-get($theme, toggle);
+              }
+            }
+          }
+        }
+      }
 
       .display {
+        display: block;
         background-color: map-get($theme, display-bg);
         color: map-get($theme, display-text);
-        font-size: 2em;
+        font-size: 2.5em;
+        border-radius: 8px;
 
         text-align: right;
         padding: 40px 32px;
+        width: 100%;
       }
 
       .keyboard {
         background-color: map-get($theme, keypad-bg);
         padding: 24px;
+        border-radius: 8px;
 
         display: flex;
         flex-direction: column;
@@ -105,6 +190,10 @@ body {
             label {
               text-align: center;
               text-transform: uppercase;
+            }
+
+            &.mul label {
+              text-transform: none;
             }
           }
         }

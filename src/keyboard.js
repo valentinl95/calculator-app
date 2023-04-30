@@ -1,6 +1,6 @@
-function Key({ code, text, clickHandler }) {
+function Key({ code, text, value, clickHandler }) {
   return (
-    <div className={"key non-selectable " + code} data-value={text} onClick={clickHandler}>
+    <div className={`key non-selectable ${code}`} data-value={value} onClick={clickHandler}>
       <label>{text}</label>
     </div>
   );
@@ -30,7 +30,7 @@ function Keyboard({ clickHandler }) {
       { code: "dot", text: ".", value: "." },
       { code: "zero", text: "0", value: "0" },
       { code: "divide", text: "/", value: "divide" },
-      { code: "mul", text: "X", value: "mul" },
+      { code: "mul", text: "x", value: "mul" },
     ],
     [
       { code: "reset", text: "reset", value: "reset" },
@@ -40,11 +40,18 @@ function Keyboard({ clickHandler }) {
 
   return (
     <div className="keyboard">
-      {keyRows.map((keyRow, rowIndex) =>
-        <div key={`row-${rowIndex}`} className="keyboard-row">
-          {keyRow.map((key) => <Key key={key.code} code={key.code} text={key.text} clickHandler={clickHandler} />)}
+      {keyRows.map((keyRow, rowIndex) => (
+        <div key={rowIndex} className="keyboard-row">
+          {keyRow.map((key, index) => (
+            <Key
+              key={index}
+              code={key.code}
+              text={key.text}
+              value={key.value}
+              clickHandler={clickHandler}
+            />))}
         </div>
-      )}
+      ))}
     </div>
   );
 }

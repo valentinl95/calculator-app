@@ -1,4 +1,4 @@
-  $theme-1: (
+$theme-1: (
   main-bg: hsl(222, 26%, 31%),
   toggle-bg: hsl(223, 31%, 20%),
   keypad-bg: hsl(223, 31%, 20%),
@@ -16,6 +16,7 @@
   reg-key-text: hsl(221, 14%, 31%),
   spec-eq-key-text: hsl(0, 0%, 100%),
   display-text: hsl(0, 0%, 100%),
+  toggle: hsl(6, 63%, 50%),
 );
 
 $theme-2: (

@@ -1,6 +1,7 @@
 const STATES = {
   IDLE: "IDLE",
   FIRST_NUM: "FIRST_NUM",
+  SECOND_NUM_EMPTY: "SECOND_NUM_EMPTY",
   SECOND_NUM: "SECOND_NUM",
   RESULT: "RESULT",
 };
@@ -12,6 +13,8 @@ const OPERATIONS = {
   divide: (arg1, arg2) => arg1 / arg2,
 };
 
+const digitsOrDotRegex = /\d|\./;
+
 class CalculatorFsm {
   constructor() {
     this.state = STATES.IDLE;
@@ -20,11 +23,20 @@ class CalculatorFsm {
     this.result = 0;
   }
 
+  clone() {
+    const clonedObject = new CalculatorFsm();
+    clonedObject.state = this.state;
+    clonedObject.operation = this.operation;
+    clonedObject.currentNumber = this.currentNumber;
+    clonedObject.result = this.result;
+    return clonedObject;
+  }
+
   transition(action) {
     switch (this.state) {
       case STATES.IDLE:
-        if (/\d/.test(action)) {
-          this.currentNumber = action;
+        if (digitsOrDotRegex.test(action)) {
+          this.currentNumber = (action === "." ? "0." : action);
           this.state = STATES.FIRST_NUM;
         } else if (action === "reset") {
           this.reset();
@@ -32,11 +44,13 @@ class CalculatorFsm {
         break;
 
       case STATES.FIRST_NUM:
-        if (/\d/.test(action)) {
+        if (digitsOrDotRegex.test(action)) {
           this.currentNumber += action;
         } else if (action in OPERATIONS) {
           this.operation = OPERATIONS[action];
-          this.state = STATES.SECOND_NUM;
+          this.state = STATES.SECOND_NUM_EMPTY;
+          this.result = Number(this.currentNumber);
+          this.currentNumber = "";
         } else if (action === "eq") {
           this.result = Number(this.currentNumber);
           this.currentNumber = "";
@@ -48,8 +62,17 @@ class CalculatorFsm {
         }
         break;
 
+      case STATES.SECOND_NUM_EMPTY:
+        if (digitsOrDotRegex.test(action)) {
+          this.currentNumber = action;
+          this.state = STATES.SECOND_NUM;
+        } else if (action === "reset") {
+          this.reset();
+        }
+        break;
+
       case STATES.SECOND_NUM:
-        if (/\d/.test(action)) {
+        if (digitsOrDotRegex.test(action)) {
           this.currentNumber += action;
         } else if (action === "eq") {
           this.result = this.operation(this.result, Number(this.currentNumber));
@@ -64,10 +87,10 @@ class CalculatorFsm {
         break;
 
       case STATES.RESULT:
-        if (/\d/.test(action)) {
+        if (digitsOrDotRegex.test(action)) {
           this.currentNumber = action;
           this.state = STATES.FIRST_NUM;
-        } else if (action in ["reset", "del"]) {
+        } else if (["reset", "del"].includes(action)) {
           this.reset();
         }
         break;
@@ -85,7 +108,23 @@ class CalculatorFsm {
   }
 
   displayValue() {
-    return (this.states !== STATES.IDLE) ? this.currentNumber : this.result;
+    let value = "0";
+    switch (this.state) {
+      case STATES.FIRST_NUM:
+      case STATES.SECOND_NUM:
+        value = this.currentNumber;
+        break;
+
+      case STATES.RESULT:
+      case STATES.SECOND_NUM_EMPTY:
+        value = this.result.toString();
+        break;
+
+      default:
+        break;
+    }
+
+    return value.startsWith(".") ? `0${value}` : value;
   }
 };
 
